@@ -1,4 +1,4 @@
-import { Lightbulb, PuzzlePiece, Users } from "lucide-react";
+import { Lightbulb, Blocks, Users } from "lucide-react";
 
 const features = [
   {
@@ -9,7 +9,7 @@ const features = [
   {
     title: "No-Code Builder",
     description: "Create professional websites, apps, and stores with intuitive drag-and-drop tools.",
-    icon: PuzzlePiece
+    icon: Blocks
   },
   {
     title: "Smart Collaboration",
