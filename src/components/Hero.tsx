@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import SignupForm from "./SignupForm";
 
@@ -8,7 +9,7 @@ export default function Hero() {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-24 sm:pb-20">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-normal">
-            Turn <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#000000] to-[#434343]">Any</span> Idea into Online Businesses
+            Turn <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#000000] to-[#434343]">Any</span> Idea into an Online Business
             <span className="block text-primary">Powered by AI</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground mb-10">
