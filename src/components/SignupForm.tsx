@@ -22,39 +22,55 @@ export default function SignupForm() {
     setLoading(true);
     
     try {
+      // Validate email
+      if (!email || !email.includes('@')) {
+        throw new Error('Please enter a valid email address');
+      }
+
       console.log('Attempting to insert:', { email, name });
       
       // Insert the waitlist entry into Supabase
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('waitlist')
         .insert([
           { 
             email,
             name: name || null // If name is empty string, store as null
           }
-        ]);
+        ])
+        .select();
       
       if (error) {
         console.error('Supabase error:', error);
         throw error;
       }
       
-      console.log('Success! Entry added to waitlist');
+      console.log('Success! Entry added to waitlist:', data);
       
       toast({
         title: "Thanks for signing up!",
         description: "We'll keep you updated on our launch.",
       });
       
+      // Clear form only on success
       setName("");
       setEmail("");
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Signup error:", error);
+      
+      // More user-friendly error messages
+      let errorMessage = "Please try again later.";
+      if (error.message?.includes('duplicate key')) {
+        errorMessage = "This email is already on the waitlist.";
+      } else if (error.message?.includes('valid email')) {
+        errorMessage = error.message;
+      }
+      
       toast({
         variant: "destructive",
         title: "Something went wrong",
-        description: "Please try again later.",
+        description: errorMessage,
       });
     } finally {
       setLoading(false);
@@ -70,6 +86,7 @@ export default function SignupForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full"
+          disabled={loading}
         />
       </div>
       <div>
@@ -80,6 +97,7 @@ export default function SignupForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           className="w-full"
+          disabled={loading}
         />
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
