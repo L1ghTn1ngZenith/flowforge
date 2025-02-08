@@ -25,22 +25,21 @@ export default function SignupForm() {
       console.log('Attempting to insert:', { email, name });
       
       // Insert the waitlist entry into Supabase
-      const { error, data } = await supabase
+      const { error } = await supabase
         .from('waitlist')
         .insert([
           { 
             email,
             name: name || null // If name is empty string, store as null
           }
-        ])
-        .select();
+        ]);
       
       if (error) {
         console.error('Supabase error:', error);
         throw error;
       }
       
-      console.log('Success! Data:', data);
+      console.log('Success! Entry added to waitlist');
       
       toast({
         title: "Thanks for signing up!",
