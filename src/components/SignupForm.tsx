@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createClient } from '@supabase/supabase-js';
 
+// Create a single supabase client for interacting with your database
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  'https://xfbqegqjdsgsfwlttkch.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmYnFlZ3FqZHNnc2Z3bHR0a2NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAwOTgxMzQsImV4cCI6MjAyNTY3NDEzNH0.3FmxzP9uUgM43pPGy8y0sLNhH2Ffbv_RekuxQN1uoew'
 );
 
 export default function SignupForm() {
