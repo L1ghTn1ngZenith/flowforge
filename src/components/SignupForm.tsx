@@ -48,10 +48,9 @@ export default function SignupForm() {
       <div>
         <Input
           type="text"
-          placeholder="Your name"
+          placeholder="Your name (optional)"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           className="w-full"
         />
       </div>
