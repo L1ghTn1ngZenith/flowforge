@@ -1,7 +1,14 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -14,11 +21,17 @@ export default function SignupForm() {
     setLoading(true);
     
     try {
-      console.log("Signup attempt:", { name, email });
+      // Insert the waitlist entry into Supabase
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([
+          { 
+            email,
+            name: name || null // If name is empty string, store as null
+          }
+        ]);
       
-      // Here you would typically send this to your backend
-      // For now, we'll simulate a successful signup
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (error) throw error;
       
       toast({
         title: "Thanks for signing up!",
@@ -27,9 +40,6 @@ export default function SignupForm() {
       
       setName("");
       setEmail("");
-      
-      // Track signup event
-      console.log("Signup successful:", { name, email });
       
     } catch (error) {
       console.error("Signup error:", error);
@@ -48,10 +58,9 @@ export default function SignupForm() {
       <div>
         <Input
           type="text"
-          placeholder="Your name"
+          placeholder="Your name (optional)"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           className="w-full"
         />
       </div>
