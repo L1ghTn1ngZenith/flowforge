@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ export default function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -14,12 +16,30 @@ export default function SignupForm() {
     setLoading(true);
     
     try {
-      console.log("Signup attempt:", { name, email });
+      if (!webhookUrl) {
+        toast({
+          title: "Error",
+          description: "Please set up your Zapier webhook URL first",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log("Sending to Zapier:", { name, email });
       
-      // Here you would typically send this to your backend
-      // For now, we'll simulate a successful signup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors", // Required for Zapier webhooks
+        body: JSON.stringify({
+          name,
+          email,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
       toast({
         title: "Thanks for signing up!",
         description: "We'll keep you updated on our launch.",
@@ -27,9 +47,6 @@ export default function SignupForm() {
       
       setName("");
       setEmail("");
-      
-      // Track signup event
-      console.log("Signup successful:", { name, email });
       
     } catch (error) {
       console.error("Signup error:", error);
@@ -45,6 +62,16 @@ export default function SignupForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+      <div>
+        <Input
+          type="text"
+          placeholder="Zapier Webhook URL"
+          value={webhookUrl}
+          onChange={(e) => setWebhookUrl(e.target.value)}
+          className="w-full mb-4"
+          required
+        />
+      </div>
       <div>
         <Input
           type="text"
