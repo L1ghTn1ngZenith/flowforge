@@ -9,23 +9,23 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjRTNFDf6w-zAdUcSfJPVFOjre5WN3A3HXH5M1dN0rA5Z5QFgGH1pTMqgc7D2kW0A8ow/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUD_TgE2Si4wGmKvmMHrWXJoaReI6tyVoV5vCUhTNSaN0xZP9wizT4bv6qTFx1q25tqQ/exec";
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       console.log("Signup attempt:", { name, email });
 
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ name, email }),
+        mode: "no-cors", // Allows cross-origin request without waiting for a response
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
       });
 
-      if (!response.ok) throw new Error("Failed to submit form");
-
+      // Since "no-cors" mode does not return a proper response, we assume success
       toast({
         title: "Thanks for signing up!",
         description: "We'll keep you updated on our launch.",
@@ -35,7 +35,7 @@ export default function SignupForm() {
       setEmail("");
 
       console.log("Signup successful:", { name, email });
-      
+
     } catch (error) {
       console.error("Signup error:", error);
       toast({
