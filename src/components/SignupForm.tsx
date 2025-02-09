@@ -9,26 +9,31 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjijOe98uhqiu8_puregxLov6KNusfYEhqHApYIgfVv_L4BjHOqs_YuRTm4mXI-FVJQA/exec";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     try {
       console.log("Signup attempt:", { name, email });
-      
-      // Here you would typically send this to your backend
-      // For now, we'll simulate a successful signup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ name, email }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) throw new Error("Failed to submit form");
+
       toast({
         title: "Thanks for signing up!",
         description: "We'll keep you updated on our launch.",
       });
-      
+
       setName("");
       setEmail("");
-      
-      // Track signup event
+
       console.log("Signup successful:", { name, email });
       
     } catch (error) {
