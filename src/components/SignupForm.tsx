@@ -8,26 +8,19 @@ export default function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState("");
   const { toast } = useToast();
+
+  // Your Zapier webhook URL should be stored securely - we'll hardcode it for now
+  const ZAPIER_WEBHOOK_URL = "YOUR_ZAPIER_WEBHOOK_URL"; // You'll need to replace this
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     try {
-      if (!webhookUrl) {
-        toast({
-          title: "Error",
-          description: "Please set up your Zapier webhook URL first",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      console.log("Sending to Zapier:", { name, email });
+      console.log("Sending to Google Sheets:", { name, email });
       
-      const response = await fetch(webhookUrl, {
+      const response = await fetch(ZAPIER_WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,16 +55,6 @@ export default function SignupForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
-      <div>
-        <Input
-          type="text"
-          placeholder="Zapier Webhook URL"
-          value={webhookUrl}
-          onChange={(e) => setWebhookUrl(e.target.value)}
-          className="w-full mb-4"
-          required
-        />
-      </div>
       <div>
         <Input
           type="text"
