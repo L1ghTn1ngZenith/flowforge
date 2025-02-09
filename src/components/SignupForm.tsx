@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,23 +11,8 @@ export default function SignupForm() {
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjijOe98uhqiu8_puregxLov6KNusfYEhqHApYIgfVv_L4BjHOqs_YuRTm4mXI-FVJQA/exec";
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!isValidEmail(email)) {
-      toast({
-        variant: "destructive",
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-      });
-      return;
-    }
-
     setLoading(true);
     
     try {
