@@ -11,8 +11,24 @@ export default function SignupForm() {
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUD_TgE2Si4wGmKvmMHrWXJoaReI6tyVoV5vCUhTNSaN0xZP9wizT4bv6qTFx1q25tqQ/exec";
 
+  // Function to check if the email is valid
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -20,12 +36,11 @@ export default function SignupForm() {
 
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Allows cross-origin request without waiting for a response
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email }),
       });
 
-      // Since "no-cors" mode does not return a proper response, we assume success
       toast({
         title: "Thanks for signing up!",
         description: "We'll keep you updated on our launch.",
