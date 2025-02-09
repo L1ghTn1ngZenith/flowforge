@@ -10,32 +10,22 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  // Your Zapier webhook URL should be stored securely - we'll hardcode it for now
-  const ZAPIER_WEBHOOK_URL = "YOUR_ZAPIER_WEBHOOK_URL"; // You'll need to replace this
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     try {
-      console.log("Sending to Google Sheets:", { name, email });
+      // Create mailto link with subject and body
+      const subject = "New Waitlist Signup";
+      const body = `Name: ${name}\nEmail: ${email}\nTimestamp: ${new Date().toISOString()}`;
+      const mailtoLink = `mailto:YOUR_EMAIL@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       
-      const response = await fetch(ZAPIER_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors", // Required for Zapier webhooks
-        body: JSON.stringify({
-          name,
-          email,
-          timestamp: new Date().toISOString(),
-        }),
-      });
+      // Open email client
+      window.location.href = mailtoLink;
 
       toast({
         title: "Thanks for signing up!",
-        description: "We'll keep you updated on our launch.",
+        description: "Please send the email to complete your signup.",
       });
       
       setName("");
