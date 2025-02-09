@@ -9,7 +9,7 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjijOe98uhqiu8_puregxLov6KNusfYEhqHApYIgfVv_L4BjHOqs_YuRTm4mXI-FVJQA/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjRTNFDf6w-zAdUcSfJPVFOjre5WN3A3HXH5M1dN0rA5Z5QFgGH1pTMqgc7D2kW0A8ow/exec";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
