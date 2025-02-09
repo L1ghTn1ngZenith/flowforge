@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,21 +14,22 @@ export default function SignupForm() {
     setLoading(true);
     
     try {
-      // Create mailto link with subject and body
-      const subject = "New Waitlist Signup";
-      const body = `Name: ${name}\nEmail: ${email}\nTimestamp: ${new Date().toISOString()}`;
-      const mailtoLink = `mailto:YOUR_EMAIL@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      console.log("Signup attempt:", { name, email });
       
-      // Open email client
-      window.location.href = mailtoLink;
-
+      // Here you would typically send this to your backend
+      // For now, we'll simulate a successful signup
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       toast({
         title: "Thanks for signing up!",
-        description: "Please send the email to complete your signup.",
+        description: "We'll keep you updated on our launch.",
       });
       
       setName("");
       setEmail("");
+      
+      // Track signup event
+      console.log("Signup successful:", { name, email });
       
     } catch (error) {
       console.error("Signup error:", error);
