@@ -1,31 +1,43 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Node.js CI and Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Trigger on push to main branch
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Trigger on pull request to main branch
+  workflow_dispatch:  # Allow manual triggering of the workflow
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x, 20.x]  # You can specify the Node.js versions you want to test
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      # Step 1: Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'  # Cache npm dependencies
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build the Vite project
+      - name: Build the project
+        run: npm run build  # This will create the "dist" folder containing the static site
+
+      # Step 5: Deploy to GitHub Pages (using a separate action for deploying)
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # The branch that will hold your built files
+          folder: dist      # The folder containing the built site (output of "npm run build")
+
