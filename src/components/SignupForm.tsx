@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useRef } from "react";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const formRef = useRef(null);
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUD_TgE2Si4wGmKvmMHrWXJoaReI6tyVoV5vCUhTNSaN0xZP9wizT4bv6qTFx1q25tqQ/exec";
 
@@ -63,8 +65,20 @@ export default function SignupForm() {
     }
   };
 
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.style.opacity = "0";
+      formRef.current.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+      formRef.current.style.transform = "translateY(-20px)";
+      setTimeout(() => {
+        formRef.current.style.opacity = "1";
+        formRef.current.style.transform = "translateY(0px)";
+      }, 100);
+    }
+  }, []);
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
       <div>
         <Input
           type="text"
