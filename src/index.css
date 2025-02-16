@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 10% 15%;
     
-    --primary: 221 83% 53%;
+    --primary: 40.75 100% 53%;
     --primary-foreground: 210 40% 98%;
     
     --secondary: 220 14% 96%;
@@ -51,4 +51,29 @@
 
 .feature-card {
   @apply p-6 rounded-lg border bg-card transition-all duration-200 hover:shadow-lg;
+}
+
+@layer utilities {
+  .text-glow {
+      text-shadow: 
+        0 0 3px rgba(255, 184, 17, 0.4),
+        0 0 5px rgba(255, 184, 17, 0.6),
+        0 0 10px rgba(255, 184, 17, 0.8);
+    animation: glow-animation 2s infinite alternate;
+    }
+  }
+
+@keyframes glow-animation {
+  0% {
+    text-shadow: 
+      0 0 3px rgba(255, 184, 17, 0.4),
+      0 0 5px rgba(255, 184, 17, 0.6),
+      0 0 10px rgba(255, 184, 17, 0.8);
+  }
+  100% {
+    text-shadow: 
+      0 0 5px rgba(255, 184, 17, 0.2),
+      0 0 10px rgba(255, 184, 17, 0.2),
+      0 0 15px rgba(255, 184, 17, 0.2);
+  }
 }
